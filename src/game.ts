@@ -44,13 +44,20 @@ class Game {
         let pub = new Room("in the campus pub");
         let lab = new Room("in a computing lab");
         let office = new Room("in the computing admin office");
-
+        
         // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        outside.setExit("east", theater);
+        outside.setExit("south", lab);
+        outside.setExit("west", pub);
+
+        theater.setExit("west", outside);
+
+        pub.setExit("east", outside);
+
+        lab.setExit("north", outside);
+        lab.setExit("east", office);
+
+        office.setExit("west", lab);
 
         // spawn player outside
         this.currentRoom = outside;
@@ -65,20 +72,7 @@ class Game {
         this.out.println("Zorld of Wuul is a new, incredibly boring adventure game.");
         this.out.println("Type 'help' if you need help.");
         this.out.println();
-        this.out.println("You are " + this.currentRoom.description);
-        this.out.print("Exits: ");
-        if(this.currentRoom.northExit != null) {
-            this.out.print("north ");
-        }
-        if(this.currentRoom.eastExit != null) {
-            this.out.print("east ");
-        }
-        if(this.currentRoom.southExit != null) {
-            this.out.print("south ");
-        }
-        if(this.currentRoom.westExit != null) {
-            this.out.print("west ");
-        }
+        this.out.println(this.currentRoom.getLongDescription());
         this.out.println();
         this.out.print(">");
     }
@@ -122,7 +116,7 @@ class Game {
         this.out.println("around at the university.");
         this.out.println();
         this.out.println("Your command words are:");
-        this.out.println("   go quit help");
+        this.out.println(this.parser.showCommands());
         return false;
     }
 
@@ -143,46 +137,33 @@ class Game {
         let direction = params[0];
 
         // Try to leave current room.
-        let nextRoom = null;
-        switch (direction) {
-            case "north" : 
-                nextRoom = this.currentRoom.northExit;
-                break;
-            case "east" : 
-                nextRoom = this.currentRoom.eastExit;
-                break;
-            case "south" : 
-                nextRoom = this.currentRoom.southExit;
-                break;
-            case "west" : 
-                nextRoom = this.currentRoom.westExit;
-                break;
-        }
+        let nextRoom = this.currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             this.out.println("There is no door!");
         }
         else {
             this.currentRoom = nextRoom;
-            this.out.println("You are " + this.currentRoom.description);
-            this.out.print("Exits: ");
-            if(this.currentRoom.northExit != null) {
-                this.out.print("north ");
-            }
-            if(this.currentRoom.eastExit != null) {
-                this.out.print("east ");
-            }
-            if(this.currentRoom.southExit != null) {
-                this.out.print("south ");
-            }
-            if(this.currentRoom.westExit != null) {
-                this.out.print("west ");
-            }
-            this.out.println();
+            this.out.println(this.currentRoom.getLongDescription());
         }
         return false;
     }
     
+    /**
+     * Print out some information about the current room.
+     * 
+     * @param params array containing all parameters
+     * @return true, if this command quits the game, false otherwise.
+     */
+    look(params : string[]) : boolean {
+        if(params.length > 0) {
+            this.out.println("Look what?");
+            return false;
+        }
+        this.out.println(this.currentRoom.getLongDescription());
+        return false;
+    }
+
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
