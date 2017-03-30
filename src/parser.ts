@@ -14,13 +14,14 @@
  */
 class Parser {
 
-    // a constant array that holds all valid command words
-    static readonly VALID_COMMANDS : string[] = [
-         "go", "look", "quit", "help"
-    ];
-
     input : HTMLInputElement;
     game : Game;
+    commands : { [name: string] : Command} = {
+        "go" : new Go(),
+        "look" : new Look(),
+        "help" : new Help(),
+        "quit" : new Quit()
+    };
 
     /**
      * Creates the parser object.
@@ -38,7 +39,6 @@ class Parser {
                 this.game.out.println(command);
                 this.parse(command.split(" "));
                 this.input.value = ""; // clears the input element 
-                this.game.out.print(">");
             } 
         }
     }
@@ -50,32 +50,18 @@ class Parser {
      * @param words an array of words to parse
      */
     parse(words : string[]) : void {
-        let wantToQuit = false;
-        let params = words.slice(1);
-        switch (words[0]) {
-            case "" :
-                // Do nothing when user enters nothing 
-                break
-            case "help" : 
-                wantToQuit = this.game.printHelp(params);
-                break;
-            case "look" : 
-                wantToQuit = this.game.look(params);
-                break;
-            case "go" :
-                wantToQuit = this.game.goRoom(params);
-                break;
-            case "quit" : 
-                wantToQuit = this.game.quit(params);
-                break;
-            default :
-                // print an error when command is not known
-                wantToQuit = this.game.printError(params);
-
+        let wantToQuit : boolean = false;
+        let command : Command = this.commands[words[0]];
+        if (command == null) {
+            this.printError();
+            return;
         }
-        if (wantToQuit) {
-            this.input.disabled = true;
-            this.game.gameOver();
+
+        let params = words.slice(1);
+        wantToQuit = command.execute(this.game, params);
+
+        if (!wantToQuit) {
+            this.game.out.print(">");
         }
     }
 
@@ -84,9 +70,26 @@ class Parser {
      */
     showCommands() : string {
         let result :  string = "";
-        for (let cmd of Parser.VALID_COMMANDS) {
+        // Loop through all command words
+        for (let cmd in this.commands) {
             result += cmd + " ";
         }
         return result;
     }
+
+    /**
+     * Print out error message when user enters unknown command.
+     * Here we print some erro message and a list of the 
+     * command words.
+     * 
+     * @param params array containing all parameters
+     * @return true, if this command quits the game, false otherwise.
+     */
+    printError() : void {
+        this.game.out.println("I don't know what you mean...");
+        this.game.out.println();
+        this.game.out.println("Your command words are:");
+        this.game.out.println(this.showCommands());
+    }
+
 }
