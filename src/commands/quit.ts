@@ -27,4 +27,12 @@ class Quit extends Command {
         return true;  // signal that we want to quit
     }
 
+    /**
+     * Returns a help text
+     * @return a help text
+     */
+    getHelp() : string {
+        return "Quit this game and leaves me alone in this world!";
+    }
+
 }

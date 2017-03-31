@@ -14,12 +14,19 @@
  */
 class Parser {
 
+    commandStack : Array<string> = [];
+
+    commandHistoryIndex : number = 0;
+
     input : HTMLInputElement;
     game : Game;
     commands : { [name: string] : Command} = {
         "go" : new Go(),
         "look" : new Look(),
         "help" : new Help(),
+        "grab" : new Grab(),
+        "drop" : new Drop(),
+        "use"  : new Use(),
         "quit" : new Quit()
     };
 
@@ -39,8 +46,42 @@ class Parser {
                 this.game.out.println(command);
                 this.parse(command.split(" "));
                 this.input.value = ""; // clears the input element 
+                this.pushCommand(command);
+            }
+            if (e.keyCode == 40) { //down-key
+                this.input.value = this.getNextCommand();
+            } 
+            if (e.keyCode == 38) { // up-key
+                this.input.value = this.getPreviousCommand();
             } 
         }
+    }
+
+    private pushCommand(command : string) : void {
+        this.commandStack.push(command);
+        this.commandHistoryIndex = this.commandStack.length;
+    }
+
+    private getNextCommand() : string {
+        if (this.commandHistoryIndex < this.commandStack.length) {
+            this.commandHistoryIndex++;
+        }
+        let cmd = this.commandStack[this.commandHistoryIndex];
+        if (cmd == null) {
+            cmd = "";
+        }
+        return cmd;
+    }
+
+    private getPreviousCommand() : string {
+        if (this.commandHistoryIndex > 0) {
+            this.commandHistoryIndex--;
+        }
+        let cmd = this.commandStack[this.commandHistoryIndex];
+        if (cmd == null) {
+            cmd = "";
+        }
+        return cmd;
     }
 
     /**

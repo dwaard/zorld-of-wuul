@@ -23,6 +23,8 @@ class Game {
 
     isOn : boolean;
 
+    inventory : Inventory = new Inventory();
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -44,6 +46,7 @@ class Game {
         let pub = new Room("in the campus pub");
         let lab = new Room("in a computing lab");
         let office = new Room("in the computing admin office");
+        let kitchen = new Room("in the pubs kitchen");
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -53,11 +56,24 @@ class Game {
         theater.setExit("west", outside);
 
         pub.setExit("east", outside);
+        pub.setExit("south", kitchen);
+
+        kitchen.setExit("north", pub);
+        kitchen.setExit("east", lab);
 
         lab.setExit("north", outside);
         lab.setExit("east", office);
-
+        lab.setExit("west", kitchen);
+        
         office.setExit("west", lab);
+
+        // Create the game items
+        theater.items.add(new GameItem("book", "an old torn and stained book about TypeScipt programming"));
+        pub.items.add(new FoodItem("sandwich", "a big, tasty pulled pork sandwich"));
+
+        // Fill the players inventory
+        this.inventory = new Inventory();
+        this.inventory.add(new GameItem("key1", "a plastic, round key with some kind of chip inside"));
 
         // spawn player outside
         this.currentRoom = outside;
@@ -73,7 +89,6 @@ class Game {
         this.out.println("Type 'help' if you need help.");
         this.out.println();
         this.out.println(this.currentRoom.getLongDescription());
-        this.out.println();
         this.out.print(">");
     }
 }
