@@ -21,4 +21,12 @@ abstract class Command {
      */
     abstract execute(game: Game, params : string[]) : boolean;
 
+    /**
+     * Definition of the method that returns a string containing a useful help text
+     * for the implementing class.
+     * 
+     * @return a useful help text
+     */
+    abstract getHelp() : string;
+
 }
