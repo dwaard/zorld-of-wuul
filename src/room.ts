@@ -28,7 +28,7 @@ class Room {
     /**
      * The list of items in the room.
      */
-    items : Inventory = new Inventory();;
+    items : Inventory = new Inventory();
     
     /**
      * Create a room described "description". Initially, it has

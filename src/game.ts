@@ -68,8 +68,8 @@ class Game {
         office.setExit("west", lab);
 
         // Create the game items
-        theater.items.add(new GameItem("book", "an old torn and stained book about TypeScipt programming"));
-        pub.items.add(new FoodItem("sandwich", "a big, tasty pulled pork sandwich"));
+        theater.items.add(new GameItem("book", "an old, torn and stained book about Java programming. It must be hundreds of years old"));
+        pub.items.add(new FoodItem("sandwich", "a big, tasty pulled pork sandwich with Blues Hog bbq sauce"));
 
         // Fill the players inventory
         this.inventory = new Inventory();

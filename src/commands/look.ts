@@ -42,7 +42,7 @@ class Look extends Command {
             game.out.println("Look what?");
             return false;
         }
-        game.out.println("You see " + item.description);
+        game.out.println("I see " + item.description);
         return false;
     }
 
@@ -59,8 +59,8 @@ class Look extends Command {
      * @return a help text
      */
     getHelp() : string {
-        return "look [itemname]|bag: When you typed ' bag'  I will take a look in my bag to see what's in there. " +
-            "Otherwise I will inspect the item you mentioned. That item must be in the current room though.";
+        return "look [itemname]|bag: When you typed 'look bag' you will take a look in your bag to see what's in there. " +
+            "Otherwise you will try to inspect the item you mentioned. That item must be in the current room though.";
     }
 
 }

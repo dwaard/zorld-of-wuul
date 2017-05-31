@@ -32,6 +32,7 @@ class Help extends Command {
         game.out.println();
         game.out.println("Your command words are:");
         game.out.println(game.parser.showCommands());
+        game.out.println("Type 'help [command word]' if you want help on a specific command.");
         return false;        
     }
 

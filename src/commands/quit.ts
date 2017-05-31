@@ -32,7 +32,7 @@ class Quit extends Command {
      * @return a help text
      */
     getHelp() : string {
-        return "Quit this game and leaves me alone in this world!";
+        return "Quit this game be a quitter forever!";
     }
 
 }

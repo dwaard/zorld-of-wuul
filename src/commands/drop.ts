@@ -20,7 +20,7 @@ class Drop extends Command {
         }
         let item = game.inventory.remove(params[0]);
         if (item == null) {
-            game.out.println("There is no " + params[0] + " in my bag!");
+            game.out.println("There is no " + params[0] + " in your bag!");
             return false;
         }        
         game.currentRoom.items.add(item);
@@ -33,7 +33,7 @@ class Drop extends Command {
      * @return a help text
      */
     getHelp() : string {
-        return "drop [itemname]: I try to remove the item form my bag and leave it into the current room.";
+        return "drop [itemname]: Try to remove the item form your bag and leave it into the current room.";
     }
 
 }

@@ -32,7 +32,7 @@ class Grab extends Command {
      * @return a help text
      */
     getHelp() : string {
-        return "grab [itemname]: I will try to take the item from the current room, an put it into my bag.";
+        return "grab [itemname]: Try to take the item from the current room, an put it into your bag.";
     }
 
 }

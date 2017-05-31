@@ -40,7 +40,7 @@ class Go extends Command {
      * @return a help text
      */
     getHelp() : string {
-        return "go [direction]: I move to the given direction and, if there is an exit, I enter the next area there.";
+        return "go [direction]: Try to move to the given direction and, if there is an exit, enter the next area there.";
     }
 
 }

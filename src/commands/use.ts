@@ -36,7 +36,7 @@ class Use extends Command {
      * @return a help text
      */
     getHelp() : string {
-        return "use [itemname]: I try to use the item. The item must be in my bag. So, you might grab it first.";
+        return "use [itemname]: Try to use the item. The item must be in your bag. So, you might grab it first.";
     }
 
 }
