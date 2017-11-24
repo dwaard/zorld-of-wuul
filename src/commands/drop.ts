@@ -18,12 +18,12 @@ class Drop extends Command {
             game.out.println("Drop what?");
             return false;
         }
-        let item = game.inventory.remove(params[0]);
+        let item = game.player.items.remove(params[0]);
         if (item == null) {
             game.out.println("There is no " + params[0] + " in your bag!");
             return false;
         }        
-        game.currentRoom.items.add(item);
+        game.player.currentRoom.items.add(item);
         game.out.println(item.name + " is dropped");
         return false;
     }

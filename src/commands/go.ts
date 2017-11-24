@@ -6,6 +6,15 @@
  */
 class Go extends Command {
 
+    aliases : { [word: string] : string} = {
+        "n" : "north",
+        "e" : "east",
+        "s" : "south",
+        "w" : "west",
+        "u" : "up",
+        "d" : "down",
+    };
+
     /** 
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
@@ -23,16 +32,25 @@ class Go extends Command {
         let direction = params[0];
 
         // Try to leave current room.
-        let nextRoom = game.currentRoom.getExit(direction);
+        let nextRoom = game.player.currentRoom.getExit(this.cleanWord(direction));
 
         if (nextRoom == null) {
             game.out.println("There is no door!");
         }
         else {
-            game.currentRoom = nextRoom;
-            game.out.println(game.currentRoom.getLongDescription());
+            game.player.currentRoom = nextRoom;
+            game.out.println(game.player.currentRoom.getLongDescription());
         }
         return false;
+    }
+
+    cleanWord(word : string) : string
+    {
+        let result = this.aliases[word];
+        if (result != null) {
+            return result;
+        }
+        return word;
     }
 
     /**

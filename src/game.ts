@@ -21,11 +21,11 @@ class Game {
     parser : Parser;
     out : Printer;
 
-    currentRoom : Room;
-
     isOn : boolean;
 
-    inventory : Inventory = new Inventory();
+    world : World;
+
+    player : Player;
 
     /**
      * Create the game and initialise its internal map.
@@ -34,51 +34,9 @@ class Game {
         this.parser = new Parser(this, input);
         this.out = new Printer(output);
         this.isOn = true;
-        this.createRooms();
+        this.world = new World();
+        this.player = this.world.spawnPlayer();
         this.printWelcome();
-    }
-
-    /**
-     * Create all the rooms and link their exits together.
-     */
-    createRooms() : void {
-        // create the rooms
-        let outside = new Room("outside the main entrance of the university");
-        let theater = new Room("in a lecture theater");
-        let pub = new Room("in the campus pub");
-        let lab = new Room("in a computing lab");
-        let office = new Room("in the computing admin office");
-        let kitchen = new Room("in the pubs kitchen");
-        
-        // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-
-        theater.setExit("west", outside);
-
-        pub.setExit("east", outside);
-        pub.setExit("south", kitchen);
-
-        kitchen.setExit("north", pub);
-        kitchen.setExit("east", lab);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-        lab.setExit("west", kitchen);
-        
-        office.setExit("west", lab);
-
-        // Create the game items
-        theater.items.add(new GameItem("book", "an old, torn and stained book about Java programming. It must be hundreds of years old"));
-        pub.items.add(new FoodItem("sandwich", "a big, tasty pulled pork sandwich with Blues Hog bbq sauce"));
-
-        // Fill the players inventory
-        this.inventory = new Inventory();
-        this.inventory.add(new GameItem("key1", "a plastic, round key with some kind of chip inside"));
-
-        // spawn player outside
-        this.currentRoom = outside;
     }
 
     /**
@@ -90,7 +48,7 @@ class Game {
         this.out.println("Zorld of Wuul is a new, incredibly boring adventure game.");
         this.out.println("Type 'help' if you need help.");
         this.out.println();
-        this.out.println(this.currentRoom.getLongDescription());
+        this.out.println(this.player.currentRoom.getLongDescription());
         this.out.print(">");
     }
 }

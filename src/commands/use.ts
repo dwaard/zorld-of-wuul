@@ -7,17 +7,17 @@
 class Use extends Command {
 
     /** 
-     * "grab" was entered. 
+     * "use" was entered. 
      * 
      * @param params array containing all parameters
      * @return true, if this command quits the game, false otherwise.
      */
     execute(game: Game, params : string[]) : boolean {
         if(params.length == 0) {
-            game.out.println("Grab what?");
+            game.out.println("Use what?");
             return false;
         }
-        let item = game.inventory.get(params[0]);
+        let item = game.player.items.get(params[0]);
         if (item == null) {
             game.out.println("Can't find " + params[0]);
             return false;
@@ -27,7 +27,7 @@ class Use extends Command {
 
     eat(game : Game, item : GameItem) : boolean {
         game.out.print("Omnomnomnomnom");
-        game.inventory.remove(item.name);
+        game.player.items.remove(item.name);
         return false;
     }
 
