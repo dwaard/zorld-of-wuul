@@ -1,4 +1,5 @@
 /**
+ * 
  * This class is part of the "Zorld of Wuul" application. 
  * "Zorld of Wuul" is a very simple, text based adventure game.  
  * 
@@ -14,6 +15,7 @@
  * 
  * @author  Michael Kölling, David J. Barnes and Bugslayer
  * @version 2017.03.30
+ * 
  */
 class Game {
     parser : Parser;
