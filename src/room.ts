@@ -14,11 +14,7 @@
  */
 class Room {
     description : string;
-
-    northExit : Room;
-    southExit : Room;
-    eastExit : Room;
-    westExit : Room;
+    exits : { [direction: string] : Room} = {};
 
     /**
      * Create a room described "description". Initially, it has
@@ -31,27 +27,46 @@ class Room {
     }
 
     /**
-     * Define the exits of this room.  Every direction either leads
-     * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
+     * Define an exit from this room.
+     * @param direction The direction of the exit.
+     * @param neighbor  The room to which the exit leads.
      */
-    setExits(north : Room, east : Room, south : Room, west : Room) : void {
-        if(north != null) {
-            this.northExit = north;
-        }
-        if(east != null) {
-            this.eastExit = east;
-        }
-        if(south != null) {
-            this.southExit = south;
-        }
-        if(west != null) {
-            this.westExit = west;
-        }
+    setExit(direction : string, neighbor : Room) : void {
+        this.exits[direction] = neighbor;
     }
 
+    /**
+     * Return a description of the room in the form:
+     *     You are in the kitchen.
+     *     Exits: north west
+     * 
+     * @return A long description of this room
+     */
+    getLongDescription() : string {
+        return "You are " + this.description + ".<br/>" + this.getExitString();
+    }
+
+    /**
+     * Return a string describing the room's exits, for example
+     * "Exits: north west".
+     * @return Details of the room's exits.
+     */
+    getExitString() : string {
+        let returnString : string = "Exits:";
+        for(let direction in this.exits) {
+            returnString += " " + direction;
+        }
+        return returnString;
+    }
+
+    /**
+     * Return the room that is reached if we go from this room in direction
+     * "direction". If there is no room in that direction, return null.
+     * @param direction The exit's direction.
+     * @return The room in the given direction.
+     */
+    getExit(direction : string) : Room {
+        return this.exits[direction];
+    }
 }
 

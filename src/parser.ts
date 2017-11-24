@@ -13,6 +13,12 @@
  * @version 2017.03.30
  */
 class Parser {
+
+    // a constant array that holds all valid command words
+    static readonly VALID_COMMANDS : string[] = [
+         "go", "look", "quit", "help"
+    ];
+
     input : HTMLInputElement;
     game : Game;
 
@@ -53,6 +59,9 @@ class Parser {
             case "help" : 
                 wantToQuit = this.game.printHelp(params);
                 break;
+            case "look" : 
+                wantToQuit = this.game.look(params);
+                break;
             case "go" :
                 wantToQuit = this.game.goRoom(params);
                 break;
@@ -70,4 +79,14 @@ class Parser {
         }
     }
 
+    /**
+     * Print out a list of valid command words.
+     */
+    showCommands() : string {
+        let result :  string = "";
+        for (let cmd of Parser.VALID_COMMANDS) {
+            result += cmd + " ";
+        }
+        return result;
+    }
 }
