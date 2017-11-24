@@ -13,9 +13,23 @@
  * @version 2017.03.30
  */
 class Room {
+
+    /**
+     * The text that describes the room. This will be printed when the 
+     * user enters the room or looks in the room.
+     */
     description : string;
+
+    /**
+     * The available exits of the room.
+     */
     exits : { [direction: string] : Room} = {};
 
+    /**
+     * The list of items in the room.
+     */
+    items : Inventory = new Inventory();
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -43,7 +57,7 @@ class Room {
      * @return A long description of this room
      */
     getLongDescription() : string {
-        return "You are " + this.description + ".<br/>" + this.getExitString();
+        return "You are " + this.description + ".<br/>" + this.items.getItemsString() + ".<br/>" + this.getExitString();
     }
 
     /**
@@ -68,5 +82,6 @@ class Room {
     getExit(direction : string) : Room {
         return this.exits[direction];
     }
+
 }
 

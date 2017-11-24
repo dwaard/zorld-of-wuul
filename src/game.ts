@@ -25,6 +25,8 @@ class Game {
 
     isOn : boolean;
 
+    inventory : Inventory = new Inventory();
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -46,6 +48,7 @@ class Game {
         let pub = new Room("in the campus pub");
         let lab = new Room("in a computing lab");
         let office = new Room("in the computing admin office");
+        let kitchen = new Room("in the pubs kitchen");
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -55,11 +58,24 @@ class Game {
         theater.setExit("west", outside);
 
         pub.setExit("east", outside);
+        pub.setExit("south", kitchen);
+
+        kitchen.setExit("north", pub);
+        kitchen.setExit("east", lab);
 
         lab.setExit("north", outside);
         lab.setExit("east", office);
-
+        lab.setExit("west", kitchen);
+        
         office.setExit("west", lab);
+
+        // Create the game items
+        theater.items.add(new GameItem("book", "an old, torn and stained book about Java programming. It must be hundreds of years old"));
+        pub.items.add(new FoodItem("sandwich", "a big, tasty pulled pork sandwich with Blues Hog bbq sauce"));
+
+        // Fill the players inventory
+        this.inventory = new Inventory();
+        this.inventory.add(new GameItem("key1", "a plastic, round key with some kind of chip inside"));
 
         // spawn player outside
         this.currentRoom = outside;
@@ -75,111 +91,6 @@ class Game {
         this.out.println("Type 'help' if you need help.");
         this.out.println();
         this.out.println(this.currentRoom.getLongDescription());
-        this.out.println();
         this.out.print(">");
-    }
-
-    gameOver() : void {
-        this.isOn = false;
-        this.out.println("Thank you for playing.  Good bye.");
-        this.out.println("Hit F5 to restart the game");
-    }
-
-    /**
-     * Print out error message when user enters unknown command.
-     * Here we print some erro message and a list of the 
-     * command words.
-     * 
-     * @param params array containing all parameters
-     * @return true, if this command quits the game, false otherwise.
-     */
-    printError(params : string[]) : boolean {
-        this.out.println("I don't know what you mean...");
-        this.out.println();
-        this.out.println("Your command words are:");
-        this.out.println("   go quit help");
-        return false;
-    }
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     * 
-     * @param params array containing all parameters
-     * @return true, if this command quits the game, false otherwise.
-     */
-    printHelp(params : string[]) : boolean {
-        if(params.length > 0) {
-            this.out.println("Help what?");
-            return false;
-        }
-        this.out.println("You are lost. You are alone. You wander");
-        this.out.println("around at the university.");
-        this.out.println();
-        this.out.println("Your command words are:");
-        this.out.println(this.parser.showCommands());
-        return false;
-    }
-
-    /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     * 
-     * @param params array containing all parameters
-     * @return true, if this command quits the game, false otherwise.
-     */
-    goRoom(params : string[]) : boolean {
-        if(params.length == 0) {
-            // if there is no second word, we don't know where to go...
-            this.out.println("Go where?");
-            return;
-        }
-
-        let direction = params[0];
-
-        // Try to leave current room.
-        let nextRoom = this.currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            this.out.println("There is no door!");
-        }
-        else {
-            this.currentRoom = nextRoom;
-            this.out.println(this.currentRoom.getLongDescription());
-        }
-        return false;
-    }
-    
-    /**
-     * Print out some information about the current room.
-     * 
-     * @param params array containing all parameters
-     * @return true, if this command quits the game, false otherwise.
-     */
-    look(params : string[]) : boolean {
-        if(params.length > 0) {
-            this.out.println("Look what?");
-            return false;
-        }
-        this.out.println(this.currentRoom.getLongDescription());
-        return false;
-    }
-
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * 
-     * @param params array containing all parameters
-     * @return true, if this command quits the game, false otherwise.
-     */
-    quit(params : string[]) : boolean {
-        if(params.length > 0) {
-            this.out.println("Quit what?");
-            return false;
-        }
-        else {
-            return true;  // signal that we want to quit
-        }
     }
 }
