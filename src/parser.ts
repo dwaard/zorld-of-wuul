@@ -24,10 +24,20 @@ class Parser {
         "go" : new Go(),
         "look" : new Look(),
         "help" : new Help(),
-        "grab" : new Grab(),
+        "take" : new Take(),
         "drop" : new Drop(),
         "use"  : new Use(),
         "quit" : new Quit()
+    };
+
+    aliases : { [word: string] : string} = {
+        "g" : "go",
+        "l" : "look",
+        "h" : "help",
+        "t" : "take",
+        "d" : "drop",
+        "u" : "use",
+        "q" : "quit",
     };
 
     /**
@@ -92,7 +102,7 @@ class Parser {
      */
     parse(words : string[]) : void {
         let wantToQuit : boolean = false;
-        let command : Command = this.commands[words[0]];
+        let command : Command = this.getCommand(words[0]);
         if (command == null) {
             this.printError();
             return;
@@ -104,6 +114,20 @@ class Parser {
         if (!wantToQuit) {
             this.game.out.print(">");
         }
+    }
+
+    getCommand(word : string) : Command
+    {
+        return this.commands[this.cleanWord(word)];
+    }
+
+    cleanWord(word : string) : string
+    {
+        let result = this.aliases[word];
+        if (result != null) {
+            return result;
+        }
+        return word;
     }
 
     /**

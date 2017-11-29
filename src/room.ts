@@ -14,6 +14,13 @@
  */
 class Room {
 
+    static readonly NORTH = "north";
+    static readonly EAST  = "east";
+    static readonly SOUTH = "south";
+    static readonly WEST  = "west";
+    static readonly UP    = "up";
+    static readonly DOWN  = "down";
+    
     /**
      * The text that describes the room. This will be printed when the 
      * user enters the room or looks in the room.
@@ -46,7 +53,37 @@ class Room {
      * @param neighbor  The room to which the exit leads.
      */
     setExit(direction : string, neighbor : Room) : void {
-        this.exits[direction] = neighbor;
+        if (neighbor == null) {
+            delete this.exits[direction];
+        } else {
+            this.exits[direction] = neighbor;
+        }
+    }
+
+    /**
+     * Define multiple exits from this room. This method accepts a variable length array of Room object in a certain order. 
+     * The order is exactly: NORTH, EAST, SOUTH, WEST, UP, DOWN. Non existing exits can be specified by null. 
+     * @param neighbors An array of exits in a specific order.
+     */
+    setExits(neighbors : Room[]) : void {
+        if (neighbors == null || neighbors.length < 1)
+            return;
+        this.setExit(Room.NORTH, neighbors[0]);
+        if (neighbors.length < 2)
+            return;
+        this.setExit(Room.EAST, neighbors[1]);
+        if (neighbors.length < 3)
+            return;
+        this.setExit(Room.SOUTH, neighbors[2]);
+        if (neighbors.length < 4)
+            return;
+        this.setExit(Room.WEST, neighbors[3]);
+        if (neighbors.length < 5)
+            return;
+        this.setExit(Room.UP, neighbors[4]);
+        if (neighbors.length < 6)
+            return;
+        this.setExit(Room.DOWN, neighbors[5]);
     }
 
     /**

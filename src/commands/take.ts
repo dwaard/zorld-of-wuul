@@ -4,7 +4,7 @@
  * @author  Bugslayer
  * @version 2017.03.31
  */
-class Grab extends Command {
+class Take extends Command {
 
     /** 
      * "grab" was entered. 
@@ -14,15 +14,15 @@ class Grab extends Command {
      */
     execute(game: Game, params : string[]) : boolean {
         if(params.length == 0) {
-            game.out.println("Grab what?");
+            game.out.println("Take what?");
             return false;
         }
-        let item = game.currentRoom.items.remove(params[0]);
+        let item = game.player.currentRoom.items.remove(params[0]);
         if (item == null) {
             game.out.println("Can't find " + params[0]);
             return false;
         }        
-        game.inventory.add(item);
+        game.player.items.add(item);
         game.out.println(item.name + " is put in your bag");
         return false;
     }
@@ -32,7 +32,7 @@ class Grab extends Command {
      * @return a help text
      */
     getHelp() : string {
-        return "grab [itemname]: Try to take the item from the current room, an put it into your bag.";
+        return "take [itemname]: Try to take the item from the current room, an put it into your bag.";
     }
 
 }

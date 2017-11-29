@@ -26,7 +26,7 @@ class Look extends Command {
                 this.lookItem(game, params[0]);
             }
         } else {
-            game.out.println(game.currentRoom.getLongDescription());
+            game.out.println(game.player.currentRoom.getLongDescription());
         }
         return false;
     }
@@ -37,7 +37,7 @@ class Look extends Command {
      * @param name 
      */
     private lookItem(game: Game, name : string) : boolean {
-        let item = game.currentRoom.items.get(name);
+        let item = game.player.currentRoom.items.get(name);
         if (item == null) {
             game.out.println("Look what?");
             return false;
@@ -51,7 +51,7 @@ class Look extends Command {
      * @param game 
      */
     private lookInventory(game: Game) {
-        game.out.println(game.inventory.getItemsString());
+        game.out.println(game.player.items.getItemsString());
     }
 
     /**

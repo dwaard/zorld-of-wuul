@@ -24,7 +24,7 @@ class Help extends Command {
         }
         game.out.println("You are lost. You are alone. You wander around at the university.");
         game.out.print("You carry a bag which seems to ")
-        if (game.inventory.length > 0) {
+        if (game.player.items.length > 0) {
             game.out.println("have something inside it.");
         } else {
             game.out.println("be emtpy.");
